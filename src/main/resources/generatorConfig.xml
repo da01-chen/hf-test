@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!-- 指定连接数据库的驱动 -->
+<!--    <classPathEntry location="path/to/mysql-connector-java-version-bin.jar" />-->
+
+    <!-- 配置一个特定的环境 -->
+    <context id="mysql" targetRuntime="MyBatis3">
+        <!-- 生成的Java文件的编码 -->
+        <property name="javaFileEncoding" value="UTF-8"/>
+
+        <!-- 开启自动重新加载mapper文件 -->
+        <property name="autoRegenerateMapper" value="true"/>
+
+        <!-- 配置数据库连接信息 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://rm-bp184ae9mbc9dr477so.mysql.rds.aliyuncs.com:3306/hf-test?useSSL=false&amp;serverTimezone=UTC"
+                        userId="root123"
+                        password="123rooT!">
+        </jdbcConnection>
+
+        <!-- 指定生成模型的包名和位置 -->
+        <javaModelGenerator targetPackage="com.example.demo.model" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 指定生成映射文件的包名和位置 -->
+        <sqlMapGenerator targetPackage="com.example.demo.mapper" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- 指定生成DAO的包名和位置 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.example.demo.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!-- 配置特定的表 -->
+        <!-- 如果你想要生成所有的表，可以不包含<table>标签 -->
+        <table tableName="user_account" domainObjectName="UserAccount" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <!-- 可以忽略表中的某些列 -->
+<!--            <ignoreColumn column="your_ignore_column" />-->
+        </table>
+        <table tableName="transfer_transaction" domainObjectName="TransferTransaction" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <!-- 可以忽略表中的某些列 -->
+            <!--            <ignoreColumn column="your_ignore_column" />-->
+        </table>
+    </context>
+</generatorConfiguration>

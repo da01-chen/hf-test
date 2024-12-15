@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: springboot
+  template:
+    metadata:
+      labels:
+        app: springboot
+    spec:
+      imagePullSecrets:
+        - name: regcred-new # 引用之前创建的secret
+      containers:
+        - name: springboot-container
+          image: crpi-6kf8wezoz0if35v2.cn-hangzhou.personal.cr.aliyuncs.com/study10086/devops:latest # 替换为你的镜像路径
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot-service
+spec:
+  selector:
+    app: springboot
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      nodePort: 30008
+  type: NodePort

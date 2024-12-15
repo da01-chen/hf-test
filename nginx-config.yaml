@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-configuration
+  namespace: ingress-nginx
+data:
+  # Nginx 配置项
+  worker-processes: "auto"
+  worker-connections: "4096"
+  proxy-read-timeout: "60s"
+  proxy-send-timeout: "60s"
+  keepalive-timeout: "65s"
+  multi-accept: "on"
+  use-http2: "true"
+  keepalive-requests: "100"
+  proxy-buffering: "on"
+  proxy-buffer-size: "16k"
+  proxy-buffers: "4 32k"
