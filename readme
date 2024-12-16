@@ -47,10 +47,10 @@ D ecs中，删除pod，自动创建新实例
 
 5 测试
 5.1 材料清单：
-A 单测及覆盖率
-B jmeter用例
-C 弹性测试 
-D 性能测试
+A 单测及覆盖率：测试类TestTransfer，doc/覆盖率.jpg
+B jmeter用例：doc/测试计划2.jmx
+C 弹性测试:
+D 性能测试:
 
 5.2 如何测试
 A 启动用例init1，初始化测试账号金额；
