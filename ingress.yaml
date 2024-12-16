@@ -4,8 +4,12 @@ metadata:
   name: my-service-ingress
   namespace: default  # 确保这与你的服务所在的命名空间匹配
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    ingress.kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "180"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "180"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
 spec:
+  ingressClassName: nginx
   rules:
     - http:
         paths:
@@ -13,6 +17,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: springboot-service  # 替换为实际服务名称
+                name: springboot-service
                 port:
-                  number: 8080  # 替换为实际服务监听的端口号
+                  number: 8080
