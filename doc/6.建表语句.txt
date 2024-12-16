@@ -1,0 +1,33 @@
+CREATE TABLE `user_account` (
+	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`user_name` VARCHAR(10) NOT NULL DEFAULT '' COLLATE 'utf8mb3_general_ci',
+	`account` INT UNSIGNED NOT NULL DEFAULT '0',
+	`money` DECIMAL(10,2) UNSIGNED NOT NULL DEFAULT '0.00',
+	`create_time` TIMESTAMP(3) NULL DEFAULT (now(3)),
+	`update_time` TIMESTAMP(3) NULL DEFAULT (now(3)) ON UPDATE CURRENT_TIMESTAMP(3),
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `key_account` (`account`) USING BTREE
+)
+COLLATE='utf8mb3_general_ci'
+ENGINE=InnoDB;
+
+
+CREATE TABLE `transfer_transaction` (
+	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`from_account` INT UNSIGNED NOT NULL DEFAULT '0',
+	`to_account` INT UNSIGNED NOT NULL DEFAULT '0',
+	`transaction_id` BIGINT UNSIGNED NOT NULL DEFAULT '0',
+	`money` DECIMAL(10,2) UNSIGNED NOT NULL DEFAULT '0.00',
+	`process_status` VARCHAR(10) NOT NULL DEFAULT 'lock_from' COLLATE 'utf8mb3_general_ci',
+	`create_time` TIMESTAMP(3) NULL DEFAULT (now(3)),
+	`update_time` TIMESTAMP(3) NULL DEFAULT (now(3)) ON UPDATE CURRENT_TIMESTAMP(3),
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `key_from_account` (`from_account`) USING BTREE,
+	INDEX `key_to_account` (`to_account`) USING BTREE,
+	INDEX `key_process_status` (`process_status`) USING BTREE,
+	INDEX `key_transaction_id` (`transaction_id`) USING BTREE
+)
+COLLATE='utf8mb3_general_ci'
+ENGINE=InnoDB
+;
+
