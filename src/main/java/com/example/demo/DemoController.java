@@ -39,7 +39,7 @@ public class DemoController {
     public ResponseEntity<String> transfer(@RequestBody TransferRequest request) {
         // 处理请求，例如打印请求参数
         StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
+        stopWatch.start("setNX");
         log.info("transfer begin with data: {}", request.toString());
         //获取redis锁
         Boolean test = redisService.setNX("Lock:"+request.getTransactionId(), request.getTransactionId(), 600);
@@ -48,7 +48,10 @@ public class DemoController {
             log.info("Duplicate: {}", request.getTransactionId());
             return ResponseEntity.ok("Duplicate");
         }
+        stopWatch.stop();
         log.info("transfer setNX done: {}", request.getTransactionId());
+
+        stopWatch.start("queryTransaction");
         TransferTransaction transaction = transactionMapper.selectByTransactionId(request.getTransactionId());
         if(transaction != null){
             //同id重复提交，幂等
@@ -56,13 +59,20 @@ public class DemoController {
             redisService.delete("Lock:"+request.getTransactionId());
             return ResponseEntity.ok(transaction.getProcessStatus());
         }
+        stopWatch.stop();
         log.info("transfer queryTransaction done: {}", request.getTransactionId());
+
+        stopWatch.start("transfer");
         int count = Service.transferAccount(request);
         //释放redis锁
         redisService.delete("Lock:"+request.getTransactionId());
 
         stopWatch.stop();
-        log.info("{} 操作耗时: {}ms", request.getTransactionId(), stopWatch.getTotalTimeMillis());
+        log.info("{} 操作耗时: {}", request.getTransactionId(), stopWatch.prettyPrint());
+        for (StopWatch.TaskInfo task : stopWatch.getTaskInfo()) {
+            log.info("Task Name: {}, Time: {} ms", task.getTaskName(), task.getTimeMillis());
+        }
+
         if(count > 0){
             //处理成功
             log.info("transfer success: {}", request.getTransactionId());

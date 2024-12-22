@@ -16,6 +16,8 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.JedisPoolConfig;
 
+import java.time.Duration;
+
 @Configuration
 public class RedisConfig {
 
@@ -59,6 +61,8 @@ public class RedisConfig {
 
         // 创建Jedis客户端配置并设置连接池配置
         JedisClientConfiguration clientConfig = JedisClientConfiguration.builder()
+                .connectTimeout(Duration.ofSeconds(60)) // 连接超时时间为2秒
+                .readTimeout(Duration.ofSeconds(60))
                 .usePooling()
                 .poolConfig(poolConfig)
                 .build();

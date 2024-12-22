@@ -3,6 +3,7 @@ package com.example.demo.mapper;
 import com.example.demo.model.TransferTransaction;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.transaction.annotation.Transactional;
 
 @Mapper
 public interface TransferTransactionMapper {
@@ -54,6 +55,7 @@ public interface TransferTransactionMapper {
      */
     int updateByPrimaryKey(TransferTransaction record);
 
+    @Transactional(readOnly = true)
     TransferTransaction selectByTransactionId(Long transactionId);
 
     @Delete("delete from transfer_transaction where transaction_id= #{transactionId}")

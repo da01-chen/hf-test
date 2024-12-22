@@ -27,7 +27,7 @@ public class InitData {
             account.setMoney(BigDecimal.valueOf(100000));
             temp.add(account);
         }
-        service.batchSave(temp);
+        service.batchInsert(temp);
     }
 
 }

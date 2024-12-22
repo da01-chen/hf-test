@@ -5,6 +5,9 @@ import com.example.demo.mapper.UserAccountMapper;
 import com.example.demo.model.TransferTransaction;
 import com.example.demo.model.UserAccount;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +24,9 @@ public class TransferTransactionService {
 
     @Autowired
     private TransferTransactionMapper transactionMapper;
+
+    @Autowired
+    private SqlSessionFactory sqlSessionFactory;
 
     @Transactional
     public int transferAccount(TransferRequest request){
@@ -51,12 +57,20 @@ public class TransferTransactionService {
         userAccountMapper.deleteByAccountRange(beginIndex,endIndex);
     }
 
+//    @Transactional
+//    public void batchSave(List<UserAccount> accounts){
+//        userAccountMapper.insertBatch(accounts);
+//    }
+
     @Transactional
-    public void batchSave(List<UserAccount> accounts){
-//        for (UserAccount account : accounts) {
-//            userAccountMapper.insertSelective(account);
-//        }
-        userAccountMapper.insertBatch(accounts);
+    public void batchInsert(List<UserAccount> accounts) {
+        try (SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH)) {
+            UserAccountMapper mapper = session.getMapper(UserAccountMapper.class);
+            mapper.insertBatch(accounts);
+            session.commit();
+        }
     }
+
+
 
 }
